@@ -1,0 +1,3 @@
+dao/VendingMachineFileImplTest.class
+dao/VendingMachineDAOInMemImplTest.class
+com/hlschuler/vendingmachine/service/VendingServiceLayerImplTest.class

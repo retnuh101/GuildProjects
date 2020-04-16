@@ -1,0 +1,5 @@
+1::iPhone::3.00::5
+2::Samsung Galaxy::2.50::0
+3::Windows Phone::0.50::6
+4::Nokia::1.50::9
+5::Banana Phone::2.00::2

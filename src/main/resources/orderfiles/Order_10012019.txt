@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total,MaterialPlusLabor
+9,John Smith,IN,5.99,Tile,100,3.50,4.15,350.00,4.15,45.823500,810.823500,354.15

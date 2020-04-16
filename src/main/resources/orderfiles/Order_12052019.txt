@@ -1,0 +1,2 @@
+OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total,MaterialPlusLabor
+11,Santa Claus,FL,6.66,Wood,1000,5.15,4.75,5150.00,4.75,659.340000,10559.340000,5154.75
