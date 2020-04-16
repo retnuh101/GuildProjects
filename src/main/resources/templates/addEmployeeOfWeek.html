@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+    ​
+    ​
+    ​
+</head>
+<body>​<div th:replace="fragments/stylingFragment.html:: navbar"></div>
+​
+<main role="main" class="container">
+    ​
+    <div id="edit form">
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Employee of the Week</span>
+            </div><br>
+            <div class="col-7 text-center m-3">
+                <form action="/addEmployeeOfWeek" method="POST">
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="employeeId">Employee Name</label>
+                        </div>
+                        <select class="custom-select" id="employeeId" name="employeeId">
+                            <option th:each="employee : ${employees}"
+                                    th:value="${employee.id}"
+                                    th:text="${employee.firstName} + ${employee.lastName}" >Employee Name</option>
+                        </select>
+                    </div>
+                    <!--<div class="form-group row">
+                        <label for="employeeId" class="col-form-label">Employee Name</label>
+                        <select class="form-control" id="employeeId" name="employeeId">
+                            <option th:each="employee : ${employees}"
+                                    th:value="${employee.id}"
+                                    th:text="${employee.firstName + ' ' + employee.lastName}" >Employee Name</option>
+                        </select>
+                    </div>-->
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon125">
+                            Week Starting</span></div>
+                            <input class="form-control" type="date" value="2019-10-26" id="weekStarting" name="weekStarting" required>
+                        </div>
+                    
+                    <!--<div class="form-group row">
+                        <label for="weekStarting" class="col-form-label">Week Starting</label>
+                        <div class="col-9">
+                            <input class="form-control" type="date" id="weekStarting" name="weekStarting">
+                        </div>
+                    </div>-->
+                    
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon9">Description</span>
+                        </div>
+                        <input type="text" class="form-control"  name="description" id="description" required aria-label="description" aria-describedby="basic-addon9">
+                    </div>
+                    
+                    <!--<div class="form-group row">
+                        <label for="description" class="col-3 col-form-label">Description</label>
+                        <div class="col-9">
+                            <input type="text" name="description" id="description"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <!--<input type="hidden" name="id" th:value="${organization.id}"/>-->
+                    <span  th:if="${userGood} == true">
+                    <button type="submit" class="btn btn-primary">
+                        Add Employee of Week</button>
+                    </span>
+                    <span  th:if="${userGood} == false">
+                    <button type="submit" class="btn btn-danger">
+                        Add Employee of Week</button>
+                    </span>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+​
+​
+​
+​
+<div th:replace="fragments/stylingFragment.html :: includes"></div>
+
+​
+​
+​
+​
+</body>
+</html>

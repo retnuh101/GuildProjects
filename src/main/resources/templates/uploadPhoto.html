@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+
+
+<style>
+    #wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+</head>
+
+
+<body>
+<div th:replace="fragments/stylingFragment.html:: navbar"></div>
+
+<main role="main" class="container">
+
+
+
+
+<form th:object="${uploadForm}" method="POST"
+      action="/uploadPhoto" enctype="multipart/form-data">
+<!--    Description:-->
+<!--    <br>-->
+    <input th:value="${id}" name="id" hidden/>
+    <br/><br/>
+<!--    File to upload: <input th:field="*{fileDatas}" type="file"/>-->
+
+    <div class="input-group">
+        <div class="custom-file">
+            <input type="file"  th:field="*{fileDatas}"  class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+            <label class="custom-file-label" for="inputGroupFile04">Choose Employee Image (JPEG format only)</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-light" type="submit" value="Upload" id="inputGroupFileAddon04">Upload</button>
+        </div>
+    </div>
+    <br />
+<!--    <input type="submit" value="Upload">-->
+</form>
+    <div id="wrapper">
+    <a type="button" href="/employees" class="btn btn-outline-light text-center">Skip for now</a>
+    </div>
+</main>
+
+
+
+
+<div th:replace="fragments/stylingFragment.html :: includes"></div>
+
+
+<script>
+    $('#inputGroupFile04').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
+
+
+</body>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+<!-- <style>
+    a:link {
+        color: red;
+    }
+    a:visited {
+        color: #600000;
+    }
+</style> -->
+</head>
+
+
+<body>
+<div th:replace="fragments/stylingFragment.html:: navbar"></div>
+<main role="main" class="container">
+
+    <span th:if="${userGood} == true">
+    <div class="row">
+        <div class="col">
+
+            <div class=" card text-white bg-primary mb-3" style="max-width: 25rem;">
+                <div class="card-header">Employee of the Week</div>
+                <img class="card-img-top" src="http://www.fillmurray.com/300/300" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}"></h5>
+                    <p class="card-text" th:text="'Week beginning: ' + ${#temporals.format(employeeOfWeek.weekStarting, 'MM.dd.yyyy')}">Quick sample text to create the card title and make up the body of the card's content.</p>
+
+                </div>
+                <ul class="list-group  list-group-flush" style="color: black;">
+                    <li class="list-group-item" th:text="'Description: ' + ${employeeOfWeek.description}"></li>
+                    <li class="list-group-item" th:text="'Job Role: ' + ${employeeOfWeek.employee.jobRole.name}">Dapibus ac facilisis in</li>
+                    <li class="list-group-item"><h5  th:if="${userGood} == false" class="badge badge-pill badge-danger" style="text-align: center;"><i class="fas fa-book-dead "></i> Bad </h5> <h5 th:if="${userGood}" class="badge badge-pill badge-primary" style="text-align: center;"><i class="fas fa-meteor "></i> Good <i class="fas fa-meteor "></i></h5> <h5 th:if="${employeeOfWeek.employee.hr} == true" class="badge badge-pill green  badge-info" style="text-align: center;"><i class="fas fa-briefcase "></i> HR</h5> <h5 th:if="${employeeOfWeek.employee.admin} == true" class="badge badge-pill green  badge-success" style="text-align: center;"><i class="fas fa-user-cog "></i>Admin</h5></li>
+                </ul>
+                <!--                <div class="card-body">-->
+                <!--                    <a href="#" class="card-link">Card link</a>-->
+                <!--                    <a href="#" class="card-link">Another link</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <div class="col">
+            <div class="list-group">
+
+                <div class="list-group-item list-group-item-heading text-white bg-primary  d-flex justify-content-between align-items-center">
+                    <h3>Events This Week </h3>
+                    <h4><span class="badge badge-light badge-pill" th:text="${eventNum}"></span></h4>
+                </div>
+                <div th:each="event:${weekEvents}">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" style="color:black;" data-dismiss="modal" th:onclick="'javascript:openEventModal(\'' + ${event.id} + '\');'">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" th:text="${event.name}">Event Name</h5>
+                            <small th:if="${event.required} == true">Mandatory</small><small th:if="${event.required} == false">Optional</small>
+                        </div>
+                        <p><span th:text="${event.startTime}">Start Time</span> to <span th:text="${event.endTime}">End Time</span></p>
+                        <small class="text-muted" th:text="'Location: '+${event.location}"></small>
+
+                    </a>
+                </div>
+            </div>
+
+            <img src="">
+        </div>
+        <!--          \      <hr/>-->
+<!--        <div class="col">-->
+<!--            <div class="list-group">-->
+<!--                <div class="list-group-item list-group-item-heading active d-flex justify-content-between align-items-center">-->
+<!--                    <h3>Organizations </h3>-->
+<!--                    <h4><span class="badge badge-light badge-pill" th:text="${orgNum}"></span></h4>-->
+<!--                </div>-->
+<!--                <div  th:each="org:${orgs}">-->
+<!--                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-dismiss="modal" th:onclick="'javascript:openOrganizationModal(\'' + ${org.id} + '\');'">-->
+<!--                        <div class="d-flex w-100 justify-content-between">-->
+<!--                            <h5 class="mb-1"  th:text="${org.name}">First List Group Item Heading</h5>-->
+<!--                            <small th:text="${org.phoneNumber}"></small>-->
+<!--                        </div>-->
+<!--                        <p th:text="${org.description}">List Group Item Text</p>-->
+<!--                        <small class="text-muted" th:text="${org.address}"></small>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</span>
+
+<span th:if="${userGood} == false">
+    <div class="row">
+        <div class="col">
+
+            <div class=" card text-white bg-danger mb-3" style="max-width: 25rem;">
+                <div class="card-header">Employee of the Week</div>
+                <img class="card-img-top" src="http://www.fillmurray.com/300/300" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}"></h5>
+                    <p class="card-text" th:text="'Week beginning: ' + ${#temporals.format(employeeOfWeek.weekStarting, 'MM.dd.yyyy')}">Quick sample text to create the card title and make up the body of the card's content.</p>
+
+                </div>
+                <ul class="list-group text-danger list-group-flush">
+                    <li class="list-group-item" th:text="'Description: ' + ${employeeOfWeek.description}"></li>
+                    <li class="list-group-item" th:text="'Job Role: ' + ${employeeOfWeek.employee.jobRole.name}">Dapibus ac facilisis in</li>
+                    <li class="list-group-item"><h5  th:if="${userGood} == false" class="badge badge-pill badge-danger" style="text-align: center;"><i class="fas fa-book-dead "></i> Bad </h5> <h5 th:if="${userGood}" class="badge badge-pill badge-primary" style="text-align: center;"><i class="fas fa-meteor "></i> Good <i class="fas fa-meteor "></i></h5> <h5 th:if="${employeeOfWeek.employee.hr} == true" class="badge badge-pill green  badge-info" style="text-align: center;"><i class="fas fa-briefcase "></i> HR</h5> <h5 th:if="${employeeOfWeek.employee.admin} == true" class="badge badge-pill green  badge-success" style="text-align: center;"><i class="fas fa-user-cog "></i>Admin</h5></li>
+                </ul>
+                <!--                <div class="card-body">-->
+                <!--                    <a href="#" class="card-link">Card link</a>-->
+                <!--                    <a href="#" class="card-link">Another link</a>-->
+                <!--                </div>-->
+            </div>
+        </div>
+        <div class="col">
+            <div class="list-group">
+
+                <div class="list-group-item list-group-item-heading text-white bg-danger  d-flex justify-content-between align-items-center">
+                    <h3>Events This Week </h3>
+                    <h4><span class="badge badge-light badge-pill" th:text="${eventNum}"></span></h4>
+                </div>
+                <div th:each="event:${weekEvents}">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" style="color: red;" data-dismiss="modal" th:onclick="'javascript:openEventModal(\'' + ${event.id} + '\');'">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" th:text="${event.name}">Event Name</h5>
+                            <small th:if="${event.required} == true">Mandatory</small><small th:if="${event.required} == false">Optional</small>
+                        </div>
+                        <p><span th:text="${event.startTime}">Start Time</span> to <span th:text="${event.endTime}">End Time</span></p>
+                        <small class="text-muted" th:text="'Location: '+${event.location}"></small>
+
+                    </a>
+                </div>
+            </div>
+
+            <img src="">
+        </div>
+        <!--          \      <hr/>-->
+<!--        <div class="col">-->
+<!--            <div class="list-group">-->
+<!--                <div class="list-group-item list-group-item-heading active d-flex justify-content-between align-items-center">-->
+<!--                    <h3>Organizations </h3>-->
+<!--                    <h4><span class="badge badge-light badge-pill" th:text="${orgNum}"></span></h4>-->
+<!--                </div>-->
+<!--                <div  th:each="org:${orgs}">-->
+<!--                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-dismiss="modal" th:onclick="'javascript:openOrganizationModal(\'' + ${org.id} + '\');'">-->
+<!--                        <div class="d-flex w-100 justify-content-between">-->
+<!--                            <h5 class="mb-1"  th:text="${org.name}">First List Group Item Heading</h5>-->
+<!--                            <small th:text="${org.phoneNumber}"></small>-->
+<!--                        </div>-->
+<!--                        <p th:text="${org.description}">List Group Item Text</p>-->
+<!--                        <small class="text-muted" th:text="${org.address}"></small>-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</span>
+
+
+
+</main>
+
+
+<div th:replace="fragments/stylingFragment.html :: includes"></div>
+
+
+
+
+
+
+</body>
+</html>

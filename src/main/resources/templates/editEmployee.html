@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+
+
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+<div th:replace="fragments/stylingFragment.html:: navbar"></div>
+
+<main role="main" class="container">
+
+    <div id="edit form">
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Edit Employee</span>
+            </div><br>
+            <div class="col-7 text-center m-3">
+
+                <form action="/editEmployee" method="POST">
+                    <input th:value="${employee.id}" hidden id="id" name="id"/>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">First Name</span>
+                        </div>
+                        <input type="text" class="form-control"  name="firstName" id="firstName" required aria-label="firstName" th:value="${employee.firstName}" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon9">Last Name</span>
+                        </div>
+                        <input type="text" class="form-control"  name="lastName" id="lastName" required aria-label="lastName" aria-describedby="basic-addon9" th:value="${employee.lastName}">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon17">
+                            Email</span>
+                        </div>
+                        <input type="email" class="form-control"  name="email" id="email" required aria-label="email" aria-describedby="basic-addon17" th:value="${employee.email}">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon2">Password</span>
+                        </div>
+                        <input type="password" class="form-control"  name="password" id="password" required aria-label="Password" aria-describedby="basic-addon2" th:value="${employee.password}">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon10">Confirm Password</span>
+                        </div>
+                        <input type="password" class="form-control"  name="confirm_password" id="confirm_password" required aria-label="confirmPassword" aria-describedby="basic-addon1">
+                        <small id="messagePassword" class="text-center"></small>
+                    </div>
+
+                    <div id="locationField" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon11">Address:</span>
+                        </div>
+                        <input id="autocomplete"
+                               name="address"
+                               class=" form-control"
+                               placeholder="Enter address & select from dropdown"
+                               onFocus="geolocate()"
+                               th:value="${employee.address}"
+                               type="text"/>
+                    </div>
+                    <br>
+                    <div class="input-group mb-3 border-white">
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <input class="field form-control form-control-sm" id="street_number" disabled="true" readonly/>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input class="field form-control form-control-sm" id="route" disabled="true" readonly/>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input class="field form-control form-control-sm" type="text" id="locality" disabled="true" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5">
+                                <input class="field form-control form-control-sm" type="text" id="administrative_area_level_1" disabled="true" readonly/>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input class="field form-control form-control-sm" type="text" id="postal_code" disabled="true" readonly/>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input class="field form-control form-control-sm" type="text" id="country" disabled="true" readonly/>
+                            </div>
+                        </div></div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon13">
+                            Home Phone</span>
+                        </div>
+                        <input type="tel" class="form-control" th:value="${employee.homePhone}" name="homePhone" id="homePhone"  aria-label="homePhone" aria-describedby="basic-addon13">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon14">
+                                Mobile Phone</span></div>
+                        <input type="tel" class="form-control"  name="mobilePhone" th:value="${employee.mobilePhone}" id="mobilePhone"  aria-label="mobilePhone" aria-describedby="basic-addon14">
+                    </div>
+                    <div sec:authorize="hasAnyRole('ROLE_HR', 'ROLE_ADMIN')">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="manager">Manager</label>
+                        </div>
+                        <select class="custom-select" id="manager" name="manager">
+                            <option th:each="manager : ${managerList}"
+                                    th:value="${manager.id}"
+                                    th:text="${manager.firstName} + ${manager.lastName}" th:selected="${employee.managerName}">Manager</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="userRoleId">User Role</label>
+                        </div>
+                        <select class="custom-select" id="userRoleId" name="userRoleId">
+                            <option th:each="userRole : ${userRoleList}"
+                                    th:value="${userRole.id}"
+                                    th:text="${userRole.name}"
+                                    th:selected="${employee.userRole.name}">User Role</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="jobRoleId">Job Role</label>
+                        </div>
+                        <select class="custom-select" id="jobRoleId" name="jobRoleId">
+                            <option th:each="jobRole : ${jobRoleList}"
+                                    th:value="${jobRole.id}"
+                                    th:text="${jobRole.name}"th:selected="${employee.jobRole.name}">Job Role</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon15">
+                            Hours of PTO</span></div>
+                        <input type="number" class="form-control"  name="hoursPto" id="hoursPto" th:value="${employee.hoursPto}" required aria-label="mobilePhone" aria-describedby="basic-addon14" value="0">
+                    </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon100">Emergency Contact Name</span>
+                        </div>
+                        <input type="text" class="form-control" th:value="${employee.emergencyContactName}" name="emergencyName" id="emergencyName" required aria-label="emergencyName" aria-describedby="basic-addon100">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1100">Emergency Contact Phone</span>
+                        </div>
+                        <input type="tel" class="form-control" th:value="${employee.emergencyContactNumber}" name="emergencyNumber" id="emergencyNumber" required aria-label="emergencyNumber" aria-describedby="basic-addon1100">
+                    </div>
+                    <div sec:authorize="hasAnyRole('ROLE_HR', 'ROLE_ADMIN')">
+                        <div class="d-flex justify-content-between">
+                            <div>  <input type="checkbox" id="isGood" name="isGood" th:checked="${employee.good}" data-toggle="toggle" data-on="Good" data-off="Bad" data-onstyle="primary" data-offstyle="danger" data-size="large">
+                            </div><div >     <input type="checkbox" id="isHr" name="isHr" data-toggle="toggle" th:checked="${employee.hr}" data-on="HR" data-off="Not HR" data-onstyle="info" data-size="large">
+                        </div>  <div > <input type="checkbox"   id="isAdmin" name="isAdmin" data-toggle="toggle" th:checked="${employee.admin}" data-on="Admin" data-off="Not Admin" data-onstyle="warning" data-size="large">
+                        </div>
+                        </div><br>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon156">
+                            Social Security Number</span></div>
+                            <input type="number" class="form-control" name="ssn" id="ssn" required aria-label="mobilePhone" th:value="${employee.ssn}" aria-describedby="basic-addon156" placeholder="xxx-xx-xxxx">
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon125">
+                            Date of Hire</span></div>
+                            <input class="form-control" type="date" value="2019-10-26" th:value="${employee.hireDate}" id="hireDate" name="hireDate" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon127">Date of Termination</span></div>
+
+                            <input class="form-control" type="date" id="termDate" th:value="${employee.termDate}" name="termDate">
+                        </div>
+                    </div>
+
+
+                    <span  th:if="${userGood} == true"><button type="submit" class="btn btn-primary">
+                        Edit Employee</button>          </span><span   th:if="${userGood} == false">         <button type="submit" class="btn btn-danger" >
+                    Edit Employee</button></span>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+
+<div th:replace="fragments/stylingFragment.html :: includes"></div>
+<script>
+    jQuery(document).ready(function () {
+        initAutocomplete(); });
+    var placeSearch, autocomplete, place;
+
+    var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+    };
+
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search predictions to
+        // geographical location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('autocomplete'), {types: ['geocode']});
+
+        // Avoid paying for data that you don't need by restricting the set of
+        // place fields that are returned to just the address components.
+        autocomplete.setFields(['address_component', 'place_id', 'geometry']);
+
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+    }
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        place = autocomplete.getPlace();
+        // document.getElementById('placeID').value = place.place_id;
+        // document.getElementById('latitude').value =  place.geometry.location.lat();
+        // document.getElementById('longitude').value =  place.geometry.location.lng();
+
+
+
+        for (var component in componentForm) {
+            document.getElementById(component).value = '';
+            document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details,
+        // and then fill-in the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+            var addressType = place.address_components[i].types[0];
+            if (componentForm[addressType]) {
+                var val = place.address_components[i][componentForm[addressType]];
+                document.getElementById(addressType).value = val;
+            }
+        }
+    }
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
+    function geolocate() {
+        $("#autocomplete").attr("autocomplete", "new-password");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var geolocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var circle = new google.maps.Circle(
+                    {center: geolocation, radius: position.coords.accuracy});
+                autocomplete.setBounds(circle.getBounds());
+            });
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB66tFLS3_WbOT1Eln1Pi7LT6dN68L-xSc&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+
+
+</body>
+</html>

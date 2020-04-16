@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <style>
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            height: 100vh;
+            overflow: hidden;
+            background-size: cover;
+            font-family: sans-serif;
+            color: white;
+        }
+
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25rem;
+            padding: 2.5rem;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0.625rem;
+        }
+
+        .box h2 {
+            margin: 0 0 1.875rem;
+            padding: 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .box .inputBox {
+            position: relative;
+        }
+
+        .box .inputBox input {
+            width: 100%;
+            padding: 0.625rem 0;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 0.062rem;
+            margin-bottom: 1.875rem;
+            border: none;
+            border-bottom: 0.065rem solid #fff;
+            outline: none;
+            background: transparent;
+        }
+
+        .box .inputBox label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0.625rem 0;
+            font-size: 1rem;
+            color: #fff;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .box .inputBox input:focus ~ label,
+        .box .inputBox input:valid ~ label,
+        .box .inputBox input:not([value=""]) ~ label {
+            top: -1.125rem;
+            left: 0;
+            color: #d9534f;
+            font-size: 0.75rem;
+        }
+
+        .box input[type="submit"] {
+            border: none;
+            outline: none;
+            color: #fff;
+            background-color: #d9534f;
+            padding: 0.625rem 1.25rem;
+            cursor: pointer;
+            border-radius: 0.312rem;
+            font-size: 1rem;
+        }
+
+        .box input[type="submit"]:hover {
+            background-color: black;
+        }
+
+
+    #ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -125px;
+    transform: translate(-50%, -50%);
+    transition: 100ms;
+        z-index: -1;
+    }
+    #ui .fire {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background: #ff9900;
+    filter: blur(20px) contrast(30);
+    border: 250px solid #000;
+    border-bottom-color: transparent;
+    border-radius: 40%;
+    box-sizing: border-box;
+    transform: scale(0.4, 1);
+    }
+    #ui .fire .burn {
+    position: absolute;
+    top: 500px;
+    left: -50px;
+    width: 100px;
+    height: 100px;
+    background: #000;
+    border-radius: 100%;
+    }
+    #ui .fire .burn.heat:nth-child(1) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(1) {
+    height: 36px;
+    margin-left: 167px;
+    animation: burning 2381ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(2) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(2) {
+    height: 40px;
+    margin-left: 233px;
+    animation: burning 2932ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(3) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(3) {
+    height: 41px;
+    margin-left: -64px;
+    animation: burning 1932ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(4) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(4) {
+    height: 6px;
+    margin-left: 176px;
+    animation: burning 2924ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(5) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(5) {
+    height: 44px;
+    margin-left: 63px;
+    animation: burning 2211ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(6) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(6) {
+    height: 19px;
+    margin-left: -60px;
+    animation: burning 2544ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(7) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(7) {
+    height: 15px;
+    margin-left: -4px;
+    animation: burning 1973ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(8) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(8) {
+    height: 5px;
+    margin-left: -149px;
+    animation: burning 2907ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(9) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(9) {
+    height: 7px;
+    margin-left: 235px;
+    animation: burning 2381ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(10) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(10) {
+    height: 22px;
+    margin-left: -172px;
+    animation: burning 1592ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(11) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(11) {
+    height: 7px;
+    margin-left: 188px;
+    animation: burning 1157ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(12) {
+    height: 2px;
+    }
+    #ui .fire .burn:nth-child(12) {
+    height: 12px;
+    margin-left: 130px;
+    animation: burning 2518ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(13) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(13) {
+    height: 30px;
+    margin-left: 58px;
+    animation: burning 1813ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(14) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(14) {
+    height: 21px;
+    margin-left: -201px;
+    animation: burning 2157ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(15) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(15) {
+    height: 47px;
+    margin-left: -1px;
+    animation: burning 2789ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(16) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(16) {
+    height: 8px;
+    margin-left: 82px;
+    animation: burning 2029ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(17) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(17) {
+    height: 26px;
+    margin-left: 29px;
+    animation: burning 2149ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(18) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(18) {
+    height: 34px;
+    margin-left: -167px;
+    animation: burning 2722ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(19) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(19) {
+    height: 15px;
+    margin-left: 51px;
+    animation: burning 1620ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(20) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(20) {
+    height: 39px;
+    margin-left: 174px;
+    animation: burning 1665ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(21) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(21) {
+    height: 25px;
+    margin-left: -56px;
+    animation: burning 1846ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(22) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(22) {
+    height: 24px;
+    margin-left: -233px;
+    animation: burning 1488ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(23) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(23) {
+    height: 26px;
+    margin-left: -40px;
+    animation: burning 2879ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(24) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(24) {
+    height: 41px;
+    margin-left: 249px;
+    animation: burning 2363ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(25) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(25) {
+    height: 21px;
+    margin-left: -99px;
+    animation: burning 2099ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(26) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(26) {
+    height: 33px;
+    margin-left: 172px;
+    animation: burning 2558ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(27) {
+    height: 7px;
+    }
+    #ui .fire .burn:nth-child(27) {
+    height: 37px;
+    margin-left: 133px;
+    animation: burning 2976ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(28) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(28) {
+    height: 44px;
+    margin-left: 48px;
+    animation: burning 2020ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(29) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(29) {
+    height: 6px;
+    margin-left: -175px;
+    animation: burning 2775ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(30) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(30) {
+    height: 29px;
+    margin-left: -120px;
+    animation: burning 2633ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(31) {
+    height: 7px;
+    }
+    #ui .fire .burn:nth-child(31) {
+    height: 9px;
+    margin-left: -33px;
+    animation: burning 2748ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(32) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(32) {
+    height: 3px;
+    margin-left: -197px;
+    animation: burning 2657ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(33) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(33) {
+    height: 28px;
+    margin-left: 167px;
+    animation: burning 2741ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(34) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(34) {
+    height: 12px;
+    margin-left: -126px;
+    animation: burning 1244ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(35) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(35) {
+    height: 25px;
+    margin-left: 179px;
+    animation: burning 1119ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(36) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(36) {
+    height: 30px;
+    margin-left: 112px;
+    animation: burning 2750ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(37) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(37) {
+    height: 21px;
+    margin-left: -205px;
+    animation: burning 1366ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(38) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(38) {
+    height: 5px;
+    margin-left: -40px;
+    animation: burning 2844ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(39) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(39) {
+    height: 18px;
+    margin-left: 216px;
+    animation: burning 2921ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(40) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(40) {
+    height: 11px;
+    margin-left: -237px;
+    animation: burning 2209ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(41) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(41) {
+    height: 29px;
+    margin-left: -162px;
+    animation: burning 2727ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(42) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(42) {
+    height: 34px;
+    margin-left: 145px;
+    animation: burning 2249ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(43) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(43) {
+    height: 38px;
+    margin-left: -5px;
+    animation: burning 2046ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(44) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(44) {
+    height: 32px;
+    margin-left: -232px;
+    animation: burning 1469ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(45) {
+    height: 7px;
+    }
+    #ui .fire .burn:nth-child(45) {
+    height: 5px;
+    margin-left: 71px;
+    animation: burning 1185ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(46) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(46) {
+    height: 50px;
+    margin-left: 95px;
+    animation: burning 2136ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(47) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(47) {
+    height: 40px;
+    margin-left: -234px;
+    animation: burning 1290ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(48) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(48) {
+    height: 43px;
+    margin-left: 155px;
+    animation: burning 1677ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(49) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(49) {
+    height: 23px;
+    margin-left: 145px;
+    animation: burning 1938ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(50) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(50) {
+    height: 46px;
+    margin-left: -17px;
+    animation: burning 2030ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(51) {
+    height: 4px;
+    }
+    #ui .fire .burn:nth-child(51) {
+    height: 12px;
+    margin-left: -86px;
+    animation: burning 2267ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(52) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(52) {
+    height: 29px;
+    margin-left: -245px;
+    animation: burning 2815ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(53) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(53) {
+    height: 43px;
+    margin-left: 225px;
+    animation: burning 1804ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(54) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(54) {
+    height: 18px;
+    margin-left: -10px;
+    animation: burning 2174ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(55) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(55) {
+    height: 8px;
+    margin-left: -57px;
+    animation: burning 1231ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(56) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(56) {
+    height: 23px;
+    margin-left: -60px;
+    animation: burning 1313ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(57) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(57) {
+    height: 5px;
+    margin-left: 10px;
+    animation: burning 1423ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(58) {
+    height: 7px;
+    }
+    #ui .fire .burn:nth-child(58) {
+    height: 9px;
+    margin-left: -110px;
+    animation: burning 1407ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(59) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(59) {
+    height: 37px;
+    margin-left: -87px;
+    animation: burning 2377ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(60) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(60) {
+    height: 1px;
+    margin-left: -26px;
+    animation: burning 2952ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(61) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(61) {
+    height: 28px;
+    margin-left: 49px;
+    animation: burning 1201ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(62) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(62) {
+    height: 17px;
+    margin-left: -178px;
+    animation: burning 1636ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(63) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(63) {
+    height: 14px;
+    margin-left: -229px;
+    animation: burning 2056ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(64) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(64) {
+    height: 39px;
+    margin-left: 111px;
+    animation: burning 2353ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(65) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(65) {
+    height: 27px;
+    margin-left: 1px;
+    animation: burning 2812ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(66) {
+    height: 9px;
+    }
+    #ui .fire .burn:nth-child(66) {
+    height: 17px;
+    margin-left: 157px;
+    animation: burning 2219ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(67) {
+    height: 2px;
+    }
+    #ui .fire .burn:nth-child(67) {
+    height: 9px;
+    margin-left: 18px;
+    animation: burning 1366ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(68) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(68) {
+    height: 48px;
+    margin-left: -10px;
+    animation: burning 1883ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(69) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(69) {
+    height: 4px;
+    margin-left: -155px;
+    animation: burning 1910ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(70) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(70) {
+    height: 34px;
+    margin-left: -148px;
+    animation: burning 2218ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(71) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(71) {
+    height: 35px;
+    margin-left: -153px;
+    animation: burning 2090ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(72) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(72) {
+    height: 15px;
+    margin-left: 14px;
+    animation: burning 2704ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(73) {
+    height: 5px;
+    }
+    #ui .fire .burn:nth-child(73) {
+    height: 29px;
+    margin-left: 153px;
+    animation: burning 1278ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(74) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(74) {
+    height: 35px;
+    margin-left: 220px;
+    animation: burning 1721ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(75) {
+    height: 6px;
+    }
+    #ui .fire .burn:nth-child(75) {
+    height: 3px;
+    margin-left: -2px;
+    animation: burning 2328ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(76) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(76) {
+    height: 5px;
+    margin-left: -180px;
+    animation: burning 2224ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(77) {
+    height: 8px;
+    }
+    #ui .fire .burn:nth-child(77) {
+    height: 22px;
+    margin-left: -124px;
+    animation: burning 2372ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(78) {
+    height: 3px;
+    }
+    #ui .fire .burn:nth-child(78) {
+    height: 26px;
+    margin-left: 150px;
+    animation: burning 2572ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(79) {
+    height: 1px;
+    }
+    #ui .fire .burn:nth-child(79) {
+    height: 36px;
+    margin-left: 242px;
+    animation: burning 2486ms -3000ms infinite linear;
+    }
+    #ui .fire .burn.heat:nth-child(80) {
+    height: 10px;
+    }
+    #ui .fire .burn:nth-child(80) {
+    height: 20px;
+    margin-left: -212px;
+    animation: burning 1911ms -3000ms infinite linear;
+    }
+
+    @keyframes burning {
+    0% {
+    transform: translateY(0);
+    }
+    100% {
+    transform: translateY(-600px);
+    }
+    }
+
+</style>
+    <script>
+    window.console = window.console || function(t) {};
+    </script>
+      <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+    }
+    </script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+</head>
+
+  <nav class="navbar navbar-expand-sm n bg-danger mb-3">
+
+
+          <div class="container">
+              <a class="navbar-brand" href="http://www.karlmarxindustries.com"><img th:src="@{img/iconLogoNav.png}" width="35"></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                      aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+
+
+                  <ul class="navbar-nav ml-auto">
+                      <a href="/loginGood" class="btn btn-primary btn-lg" role="button" aria-pressed="true">Good Login</a>
+
+
+
+
+                  </ul>
+              </div>
+          </div>
+      </nav>
+
+
+
+
+<body translate="no">
+<div class="box">
+    <h2>Login</h2>
+    <h3 th:if="${#request.getParameter('login_error') == '1'}">
+                Wrong id or password!</h3>
+    <form class="form-horizontal" 
+                  role="form" 
+                  method="post" 
+                  action="login">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Email Address</span>
+            </div>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">Password</span>
+            </div>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   name="password"
+                   placeholder="" required aria-label="Password" aria-describedby="basic-addon2">
+        </div>
+<!--                <input type="hidden"-->
+<!--                       th:name="${_csrf.parameterName}"-->
+<!--                       th:value="${_csrf.token}"/>-->
+        <div class="form-group row">
+
+            <div class="col text-center">
+                        <input type="submit"
+                               class="btn btn-lg btn-danger"
+                               id="search-button"
+                               value="Sign in"></div>
+                    </div>
+                </div>
+
+
+
+<div id="ui">
+<div class="fire">
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn heat"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+<div class="burn"></div>
+</div>
+</div>
+
+
+<!-- Bootstrap Dependencies -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"></script> -->
+<script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+
+        crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+        integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+
+<script src="../js/workhorse.js" th:href="@{/js/workhorse.js}"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>

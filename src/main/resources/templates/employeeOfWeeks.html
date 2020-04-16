@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+                </th:block> /*/-->
+
+
+
+    </head>
+
+
+    <body>
+        <div th:replace="fragments/stylingFragment.html:: navbar"></div>
+
+        <main role="main" class="container">
+
+            <div class="container">
+                <span th:if="${userGood} == true">
+                <h1 class="display-2" align="center" style="font-weight: 500;">Employee of the Week   <a class="btn btn-primary  btn-sm" href="/addEmployeeOfWeek" role="button"><i class="fas fa-plus-square"></i> Add Employee of the Week</a>
+
+                </h1>
+            </span>
+            <span th:if="${userGood} == false">
+                <h1 class="display-2" align="center" style="font-weight: 500;">Employee of the Week   <a class="btn btn-danger  btn-sm" href="/addEmployeeOfWeek" role="button"><i class="fas fa-plus-square"></i> Add Employee of the Week</a>
+
+                </h1>
+            </span>
+                <span th:if="${userGood} == true">
+                <table id="organization-table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>E.O.W Id</th>
+                            <th>Employee Name</th>
+                            <th>Week Starting</th>
+                            <th>Description</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr th:each="employeeOfWeek:${employeeOfWeeks}">
+                            <td><div class="d-flex justify-content-center"><a href="#" th:href="@{editEmployeeOfWeek(id=${employeeOfWeek.id})}"><i class="fas fa-edit" style="color: black;"></i></a>
+                                    <a  th:href="'#confirmDelete' + ${employeeOfWeek.id}" class="trigger-btn" data-toggle="modal"><i class="fas fa-minus-square " style="color: black;"></i></a>
+                                    <div th:id="'confirmDelete' + ${employeeOfWeek.id}" class="modal fade" style="font-family: 'Varela Round', sans-serif;">
+                                        <div class="modal-dialog modal-confirm">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="icon-box">
+                                                        <i class="material-icons" style="text-align: center;">&#xE5CD;</i>
+
+
+                                                    </div>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div><h2 class="modal-title">Are you sure?</h2></div>
+
+                                                    <p>Do you really want to delete  <span th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}" style="color:black; font-weight: bolder; font-size: 120%;">Name</span>? This process cannot be undone.</p>
+
+
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-info " data-dismiss="modal">Cancel</button>
+                                                        <a href="#" th:href="@{deleteEmployeeOfWeek(id=${employeeOfWeek.id})}"> <button type="button" class="btn btn-danger ">Delete</button></a> </div>
+                                                </div> </div>
+                                            <div class="modal-footer">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#" th:href="'/employee/' + ${employeeOfWeek.employee.id}"><i class="fas fa-info-circle " style="color:black;"></i></a></div>
+                            </td>
+                            <td th:text="${employeeOfWeek.id}">E.O.W Id</td>
+                            <td th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}">name</td>
+                            <td th:text="${employeeOfWeek.weekStarting}">week starting</td>
+                            <td th:text="${employeeOfWeek.description}">description</td>
+
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>E.O.W Id</th>
+                                    <th>Employee Name</th>
+                                    <th>Week Starting</th>
+                                    <th>Description</th>
+                                </tr>
+                            </tfoot>
+                            </table>
+                        </span>
+
+
+                        <span th:if="${userGood} == false">
+                <table id="organization-table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>E.O.W Id</th>
+                            <th>Employee Name</th>
+                            <th>Week Starting</th>
+                            <th>Description</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr th:each="employeeOfWeek:${employeeOfWeeks}">
+                            <td><div class="d-flex justify-content-center"><a href="#" th:href="@{editEmployeeOfWeek(id=${employeeOfWeek.id})}"><i class="fas fa-edit"></i></a>
+                                    <a  th:href="'#confirmDelete' + ${employeeOfWeek.id}" class="trigger-btn" data-toggle="modal"><i class="fas fa-minus-square "></i></a>
+                                    <div th:id="'confirmDelete' + ${employeeOfWeek.id}" class="modal fade" style="font-family: 'Varela Round', sans-serif;">
+                                        <div class="modal-dialog modal-confirm">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="icon-box">
+                                                        <i class="material-icons" style="text-align: center;">&#xE5CD;</i>
+
+
+                                                    </div>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div><h2 class="modal-title">Are you sure?</h2></div>
+
+                                                    <p>Do you really want to delete  <span th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}" style="color:black; font-weight: bolder; font-size: 120%;">Name</span>? This process cannot be undone.</p>
+
+
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-info " data-dismiss="modal">Cancel</button>
+                                                        <a href="#" th:href="@{deleteEmployeeOfWeek(id=${employeeOfWeek.id})}"> <button type="button" class="btn btn-danger ">Delete</button></a> </div>
+                                                </div> </div>
+                                            <div class="modal-footer">
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#" th:href="'/employee/' + ${employeeOfWeek.employee.id}"><i class="fas fa-info-circle "></i></a></div>
+                            </td>
+                            <td th:text="${employeeOfWeek.id}">E.O.W Id</td>
+                            <td th:text="${employeeOfWeek.employee.firstName} + ' ' + ${employeeOfWeek.employee.lastName}">name</td>
+                            <td th:text="${employeeOfWeek.weekStarting}">week starting</td>
+                            <td th:text="${employeeOfWeek.description}">description</td>
+
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>E.O.W Id</th>
+                                    <th>Employee Name</th>
+                                    <th>Week Starting</th>
+                                    <th>Description</th>
+                                </tr>
+                            </tfoot>
+                            </table>
+                        </span>
+
+
+                            <!--    </div>-->
+
+                            <!--    <div id="addOrganization" class="modal fade" role="dialog">-->
+                            <!--        <div class="modal-dialog modal-lg">-->
+
+                            <!--            &lt;!&ndash; Modal content&ndash;&gt;-->
+                            <!--            <div class="modal-content">-->
+                            <!--                <div class="modal-header">-->
+                            <!--                    <h3 class="modal-title">Add an Organization</h3>-->
+                            <!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                            <!--                        <span aria-hidden="true">&times;</span>-->
+                            <!--                    </button>-->
+                            <!--                </div>-->
+                            <!--                <div class="modal-body">-->
+                            <!--                    <form type="form" action="addOrganization" method="POST">-->
+
+                            <!--                        <div class="form-row form-group">-->
+                            <!--                            <label class="col-md-3" for="name">Organization Name</label>-->
+                            <!--                            <input type="text" class="col-md-9 form-control" id="name" name="name"/>-->
+                            <!--                        </div>-->
+                            <!--                        <br>-->
+                            <!--                        <div id="locationField" class=" form-row form-group">-->
+                            <!--                            <label class="col-md-3" for="autocomplete">Street Address</label>-->
+                            <!--                            <input id="autocomplete"-->
+                            <!--                                   name="address"-->
+
+                            <!--                                   class="col-md-9 form-control"-->
+                            <!--                                   placeholder="enter address and select from list"-->
+                            <!--                                   onFocus="geolocate()"-->
+                            <!--                                   type="text"/>-->
+                            <!--                        </div><br>-->
+
+
+                            <!--                        <div class="form-row">-->
+                            <!--                            <div class="form-group col-md-2">-->
+                            <!--                                <label for="street_number">No.</label>-->
+                            <!--                                <input class="field form-control" id="street_number" disabled="true" readonly/>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="form-group col-md-10">-->
+                            <!--                                <label for="route" >Street</label>-->
+                            <!--                                <input class="field form-control" id="route" disabled="true" readonly/>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+
+                            <!--                        <div class="form-row">-->
+                            <!--                            <div class="form-group col-md-6">-->
+                            <!--                                <label for="locality">City</label>-->
+                            <!--                                <input class="field form-control" type="text" id="locality" disabled="true" readonly/>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="form-group col-md-4">-->
+                            <!--                                <label for="administrative_area_level_1">State</label>-->
+                            <!--                                <input class="field form-control" type="text" id="administrative_area_level_1" disabled="true" readonly/>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="form-group col-md-2">-->
+                            <!--                                <label for="postal_code">Zip</label>-->
+                            <!--                                <input class="field form-control" type="text" id="postal_code" disabled="true" readonly/>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="form-group">-->
+                            <!--                            <label for="country">Country</label>-->
+                            <!--                            <input class="field form-control" type="text" id="country" disabled="true" readonly/>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="form-group row">-->
+                            <!--                            <label class="col-3 col-form-label" for="email">Email</label>-->
+                            <!--                            <div class="col-9"><input type="email" class=" form-control" id="email" name="email"/></div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="form-group row">-->
+                            <!--                            <label class="col-3 col-form-label" for="url">Website</label>-->
+                            <!--                            <div class="col-9"><input type="url" class=" form-control" id="url" name="url"/></div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="form-group row">-->
+                            <!--                            <label class="col-3 col-form-label" for="phoneNumber">Phone Number</label>-->
+                            <!--                            <div class="col-9"><input type="tel" class=" form-control" id="phoneNumber" name="phoneNumber"/></div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="form-group row">-->
+                            <!--                            <label for="description" class="col-3 col-form-label">-->
+                            <!--                                Description</label>-->
+                            <!--                            <div class="col-9">-->
+                            <!--                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                        <input type="hidden" id="placeID" name="placeID" />-->
+                            <!--                        <input type="hidden" id="latitude" name="latitude" />-->
+                            <!--                        <input type="hidden" id="longitude" name="longitude" />-->
+
+
+
+
+
+
+
+                            <!--                        <div class="modal-footer">-->
+                            <!--                            <button type="submit" class="btn btn-primary" >Add Organization</button>-->
+
+                            <!--                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                            <!--                        </div>-->
+                            <!--                    </form>-->
+                            <!--                </div>-->
+
+                            <!--            </div>-->
+                            <!--        </div>-->
+
+                            </main>
+
+
+
+                            <div th:replace="fragments/stylingFragment.html :: includes"></div>
+                            <div th:replace="fragments/stylingFragment.html :: autocompleteScript"></div>
+
+                            <script>
+                                jQuery(document).ready(function () {
+                                initAutocomplete(); });
+                                var placeSearch, autocomplete, place;
+
+                                var componentForm = {
+                                street_number: 'short_name',
+                                route: 'long_name',
+                                locality: 'long_name',
+                                administrative_area_level_1: 'short_name',
+                                country: 'long_name',
+                                postal_code: 'short_name'
+                                };
+
+                                function initAutocomplete() {
+                                // Create the autocomplete object, restricting the search predictions to
+                                // geographical location types.
+                                autocomplete = new google.maps.places.Autocomplete(
+                                document.getElementById('autocomplete'), {types: ['geocode']});
+
+                                // Avoid paying for data that you don't need by restricting the set of
+                                // place fields that are returned to just the address components.
+                                autocomplete.setFields(['address_component', 'place_id', 'geometry']);
+
+                                // When the user selects an address from the drop-down, populate the
+                                // address fields in the form.
+                                autocomplete.addListener('place_changed', fillInAddress);
+                                }
+
+                                function fillInAddress() {
+                                // Get the place details from the autocomplete object.
+                                place = autocomplete.getPlace();
+                                document.getElementById('placeID').value = place.place_id;
+                                document.getElementById('latitude').value =  place.geometry.location.lat();
+                                document.getElementById('longitude').value =  place.geometry.location.lng();
+
+
+
+                                for (var component in componentForm) {
+                                document.getElementById(component).value = '';
+                                document.getElementById(component).disabled = false;
+                                }
+
+                                // Get each component of the address from the place details,
+                                // and then fill-in the corresponding field on the form.
+                                for (var i = 0; i < place.address_components.length; i++) {
+                                var addressType = place.address_components[i].types[0];
+                                if (componentForm[addressType]) {
+                                var val = place.address_components[i][componentForm[addressType]];
+                                document.getElementById(addressType).value = val;
+                                }
+                                }
+                                }
+                                // Bias the autocomplete object to the user's geographical location,
+                                // as supplied by the browser's 'navigator.geolocation' object.
+                                function geolocate() {
+                                $("#autocomplete").attr("autocomplete", "new-password");
+                                if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(function(position) {
+                                var geolocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                                };
+                                var circle = new google.maps.Circle(
+                                {center: geolocation, radius: position.coords.accuracy});
+                                autocomplete.setBounds(circle.getBounds());
+                                });
+                                }
+                                }
+                            </script>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB66tFLS3_WbOT1Eln1Pi7LT6dN68L-xSc&libraries=places&callback=initAutocomplete"
+                            async defer></script>
+
+
+
+                            </body>
+                            </html>

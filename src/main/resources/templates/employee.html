@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--/*/ <th:block th:include="fragments/stylingFragment.html :: head">
+            </th:block> /*/-->
+
+<span th:if="${userGood} == true">
+<style>
+    body code[class*=language-],
+    body table tbody>tr:nth-child(odd)>td,
+    body table tbody>tr:nth-child(odd)>th {
+        background: white;
+    }
+    body {
+        color:#600000;
+    }
+
+     a:link {
+         color: white;
+     }
+    /*a:visited {
+        color: white;
+    }*/
+
+</style>
+</span>
+
+<span th:if="${userGood} == false">
+<style>
+    body code[class*=language-],
+    body table tbody>tr:nth-child(odd)>td,
+    body table tbody>tr:nth-child(odd)>th {
+        background: white;
+    }
+    body {
+        color:#600000;
+    }
+
+     a:link {
+         color: red;
+     }
+    a:visited {
+        color: #600000;
+    }
+
+</style>
+</span>
+</head>
+
+
+<body>
+<div th:replace="fragments/stylingFragment.html:: navbar"></div>
+
+
+<main class="container">
+
+            <div class="row card card-danger" style="margin-top:2%;">
+                <div class="card-heading lead">
+                    <div class="row">
+
+                        <div class="col-lg-8 col-md-8">
+                            <span th:if="${userGood} == true">
+                            <i class="fa fa-users" style="color: black;"></i><span style="color: black;"> View Employee Details</span>
+                        </span>
+                        <span th:if="${userGood} == false">
+                            <i class="fa fa-users"></i> View Employee Details
+                        </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 text-right">
+                            <div class="btn-group text-center">
+
+                                <span th:if="${userGood} == true">
+                                <a href="#" th:href="@{../editEmployee(id=${employee.id})}" class="btn btn-primary btn-sm btn-default"><i class="fa fa-edit fa-1x" style="color:white;"></i></a>
+                                
+                                <a  th:href="'#confirmDelete' + ${employee.id}" class="trigger-btn btn btn-primary btn-sm btn-default" data-toggle="modal"><i class="fa fa-trash-o fa-1x" style="color: white;"></i></a>
+                            </span>
+                            <span th:if="${userGood} == false">
+                                
+                                
+
+                                <a href="#" th:href="@{../editEmployee(id=${employee.id})}" class="btn btn-danger btn-sm btn-default"><i class="fa fa-edit fa-1x" style="color:white;"></i></a>
+
+
+                                <a  th:href="'#confirmDelete' + ${employee.id}" class="trigger-btn btn btn-danger btn-sm btn-default" data-toggle="modal"><i class="fa fa-trash-o fa-1x" style="color:white;"></i></a>
+                            </span>
+                                <div th:id="'confirmDelete' + ${employee.id}" class="modal fade" style="font-family: 'Varela Round', sans-serif;">
+                                    <div class="modal-dialog modal-confirm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="icon-box">
+                                                    <i class="material-icons" style="text-align: center;">&#xE5CD;</i>
+                                                </div>
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div><h2 class="modal-title">Are you sure?</h2></div>
+
+                                                <p>Do you really want to delete  <span th:text="${employee.firstName} + ' ' + ${employee.lastName}" style="color:black; font-weight: bolder; font-size: 120%;">Name</span>? This process cannot be undone.</p>
+
+                                                <div class="text-center">
+                                                    <button type="button" class="btn btn-info " data-dismiss="modal">Cancel</button>
+                                                    <a href="#" th:href="@{deleteEmployee(id=${employee.id})}"> <button type="button" class="btn btn-danger ">Delete</button></a> </div>
+                                            </div> </div>
+                                        <div class="modal-footer">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3">
+                                    <div style="text-align: center;">
+                                        <span class="text-left">
+                                        <span th:if="${employee.hasImage} == false">
+                                            <img     src="https://www.fillmurray.com/200/200"   class="img-responsive img-thumbnail">
+                                        </span>
+                                        <span th:if="${employee.hasImage} == true">
+                                            <img     th:src="@{'/uploads/' + ${employee.id} + '.jpg'}"  class="img-responsive img-thumbnail" style="max-width: 200px;">
+                                        </span>
+<!--                                                    <a href="#" class="btn btn-danger btn-block" data-toggle="modal" data-target="#PhotoOption"><i class="fa fa-photo"></i> Change Photo</a>-->                            <span  th:if="${userGood} == true">
+                                                    <a th:href="'/uploadPhoto/' + ${employee.id}" class="btn btn-primary btn-block" ><i class="fa fa-photo" style="color:white;"></i><span style="color: white;"> Change Photo</span></a>
+                                        </span>
+                                        <span  th:if="${userGood} == false">
+                                                    <a th:href="'/uploadPhoto/' + ${employee.id}" class="btn btn-danger btn-block" ><i class="fa fa-photo" style="color:white;"></i><span style="color:white"> Change Photo</span></a>
+                                        </span>
+
+
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="PhotoOption" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog" style="width:30%;height:30%;">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                            <h4 class="modal-title text-danger" id="myModalLabel"><i class="fa fa-gear"></i> <span class="text-right">Viddhyut Mall</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+    <center><img src="upload/profile_pic/701b4263f7d38604699b7c1f89a3e6a6.jpg" class="img-responsive img-thumbnail"></center>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="upload/upload-view.php?id=68" class="btn btn-danger"><i class="fa fa-photo"></i> Upload</a>
+                                                            <a href="upload/upload-view.php?id=68&amp;name=Viddhyut Mall&amp;src=view" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
+                                    </span></div>
+
+                                    <div class="table-responsive card">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-center">
+                                                    <h3 th:text="${employee.firstName} + ' '+ ${employee.lastName}">name</h3><h5><span  th:if="${good} == false" class="badge badge-pill badge-danger" style="text-align: center;"><i class="fas fa-book-dead "></i> Bad </span> <span th:if="${good} == true" class="badge badge-pill badge-primary" style="text-align: center;"><i class="fas fa-meteor "></i> Good <i class="fas fa-meteor "></i></span> <span th:if="${hr} == true" class="badge badge-pill green  badge-info" style="text-align: center;"><i class="fas fa-briefcase "></i> HR</span> <span th:if="${admin} == true" class="badge badge-pill green  badge-success" style="text-align: center;"><i class="fas fa-user-cog "></i>Admin</span></h5>
+
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+            <div class="col-lg-9 col-md-9">
+                <span  th:if="${userGood} == true">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a data-toggle="tab" href="#Summary" class="text-danger nav-link active"><i class="fa fa-indent" style="color: #0275d8;"></i><span style="color: #0275d8;"> Summary</span></a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Contact" class="text-danger nav-link"><i class="fa fa-bookmark-o" style="color: #0275d8;"></i> <span style="color: #0275d8;"> Demographic</span></a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Address" class="text-danger nav-link "><i class="fa fa-home" style="color: #0275d8;"></i> <span style="color: #0275d8;">Contact Info</span></a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Events" class="text-danger nav-link "><i class="fa fa-calendar" style="color:#0275d8;"></i> <span style="color: #0275d8;">Confirmed Events</span></a></li>
+
+                </ul>
+                </span>
+                <span  th:if="${userGood} == false">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a data-toggle="tab" href="#Summary" class="text-danger nav-link active"><i class="fa fa-indent"></i> Summary</a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Contact" class="text-danger nav-link"><i class="fa fa-bookmark-o"></i> Demographics</a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Address" class="text-danger nav-link "><i class="fa fa-home"></i> Contact Info</a></li>
+                    <li class="nav-item"><a data-toggle="tab" href="#Events" class="text-danger nav-link "><i class="fa fa-calendar"></i> Confirmed Events</a></li>
+
+                </ul>
+                </span>
+                <span  th:if="${userGood} == true">
+                <div class="tab-content">
+                    <div id="Summary" class="tab-pane  active">
+
+                <div class="table-responsive card">
+                    <table class="table">
+                        <tbody>
+
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-user" style="color: black;"></i><span style="color: black;">  First Name</span></td>
+                            <td th:text="${employee.firstName}">name</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-user" style="color: black;"></i><span style="color: black;">  Last Name</span></td>
+                            <td th:text="${employee.lastName}">name</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-list-ol" style="color: black;"></i><span style="color: black;">  Employee ID</span></td>
+                            <td th:text="${employee.id}">id</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-calendar" style="color: black;"></i><span style="color: black;">  Hire Date</span></td>
+                            <td th:text="${employee.hireDate}">December 2, 2011</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-calendar" style="color: black;"></i><span style="color: black;"> Termination Date</span></td>
+                            <td th:text="${employee.termDate}">December 2, 2011</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-book" style="color: black;"></i><span style="color: black"> Side</span></td>
+                            <td><span  th:if="${employee.good} == false"  style="text-align: center;"><i class="fas fa-book-dead "></i> Bad </span> <span th:if="${employee.good} == true"  style="text-align: center;"><i class="fas fa-meteor "></i> Good <i class="fas fa-meteor "></i></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    </div>
+
+                    <div id="Address" class="tab-pane fade">
+                        <div class="table-responsive card">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-envelope-o" style="color: black;"></i><span style="color: black;"> Email </span></td>
+                                    <td><a href="'mailto:'+ ${employee.email}" th:value="${employee.email}">mail@mail.com</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-mobile-alt" style="color: black;"></i><span style="color: black;"> Mobile Number</span></td>
+                                    <td th:value="${employee.mobilePhone}">88********</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-phone" style="color: black;"></i><span style="color: black;"> Home Number</span></td>
+                                    <td th:value="${employee.homePhone}">88********</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-group" style="color: black;"></i><span style="color: black;"> Address</span></td>
+                                    <td th:text="${employee.address}"></td> 
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="Contact" class="tab-pane fade">
+                        <div class="table-responsive card">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-network-wired" style="color: black;"></i><span style="color: black;"> Manager's Name</span></td>
+                                    <td th:text="${employee.managerName}">Manager</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-id-card" style="color: black;"></i><span style="color: black;"> Job Role</span></td>
+                                    <td th:text="${employee.jobRole.name}">Job Role</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-user" style="color: black;"></i><span style="color: black;"> Emergency Contact Person</span></td>
+                                    <td th:text="${employee.emergencyContactName}">em name</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-phone" style="color: black;"></i><span style="color: black;"> Emergency Contact Phone</span></td>
+                                    <td th:text="${employee.emergencyContactNumber}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="Events" class="tab-pane fade">
+                        <div class="list-group-item list-group-item-heading text-white bg-primary  d-flex justify-content-between align-items-center">
+                            <h3>Events This Week </h3>
+                            <h4><span class="badge badge-light badge-pill" th:text="${eventNum}"></span></h4>
+                        </div>
+                    <div th:each="event:${events}">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-dismiss="modal" th:href="'/events/' + ${event.id}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" th:text="${event.name}">Event Name</h5>
+                                <small th:if="${event.required} == true">Mandatory</small><small th:if="${event.required} == false">Optional</small>
+                            </div>
+                            <p><span th:text="${event.startTime}">Start Time</span> to <span th:text="${event.endTime}">End Time</span></p>
+                            <small class="text-muted" th:text="'Location: '+${event.location}"></small>
+
+                        </a>
+                    </div>
+                </div>
+
+
+                </div>
+            </span>
+
+            <span  th:if="${userGood} == false">
+                <div class="tab-content">
+                    <div id="Summary" class="tab-pane  active">
+
+                <div class="table-responsive card">
+                    <table class="table">
+                        <tbody>
+
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-user"></i> First Name</td>
+                            <td th:text="${employee.firstName}">name</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-user"></i> Last Name</td>
+                            <td th:text="${employee.lastName}">name</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-list-ol"></i> Employee ID</td>
+                            <td th:text="${employee.id}" name="id">id</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-calendar"></i> Hire Date</td>
+                            <td th:text="${employee.hireDate}">December 2, 2011</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-calendar"></i> Termination Date</td>
+                            <td th:text="${employee.termDate}">December 2, 2011</td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger"><i class="fa fa-book"></i> Side</td>
+                            <td><span  th:if="${employee.good} == false"  style="text-align: center;"><i class="fas fa-book-dead "></i> Bad </span> <span th:if="${employee.good} == true"  style="text-align: center;"><i class="fas fa-meteor "></i> Good <i class="fas fa-meteor "></i></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    </div>
+
+                    <div id="Address" class="tab-pane fade">
+                        <div class="table-responsive card">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-envelope-o"></i> Email </td>
+                                    <td><a href="'mailto:'+ ${employee.email}" th:value="${employee.email}">mail@mail.com</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-mobile-alt"></i> Mobile Number</td>
+                                    <td th:value="${employee.mobilePhone}">88********</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-phone"></i> Home Number</td>
+                                    <td th:value="${employee.homePhone}">88********</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-group"></i> Address</td>
+                                    <td th:text="${employee.address}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="Contact" class="tab-pane fade">
+                        <div class="table-responsive card">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-network-wired"></i> Manager's Name</td>
+                                    <td th:text="${employee.managerName}">Manager</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-id-card"></i> Job Role</td>
+                                    <td th:text="${employee.jobRole.name}">Job Role</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-user"></i> Emergency Contact Person</td>
+                                    <td th:text="${employee.emergencyContactName}">em name</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger"><i class="fa fa-phone"></i> Emergency Contact Phone</td>
+                                    <td th:text="${employee.emergencyContactNumber}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="Events" class="tab-pane fade">
+                        <div class="list-group-item list-group-item-heading text-white bg-danger  d-flex justify-content-between align-items-center">
+                            <h3>Events This Week </h3>
+                            <h4><span class="badge badge-light badge-pill" th:text="${eventNum}"></span></h4>
+                        </div>
+                    <div th:each="event:${events}">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" data-dismiss="modal" th:href="'/events/' + ${event.id}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1" th:text="${event.name}">Event Name</h5>
+                                <small th:if="${event.required} == true">Mandatory</small><small th:if="${event.required} == false">Optional</small>
+                            </div>
+                            <p><span th:text="${event.startTime}">Start Time</span> to <span th:text="${event.endTime}">End Time</span></p>
+                            <small class="text-muted" th:text="'Location: '+${event.location}"></small>
+
+                        </a>
+                    </div>
+                </div>
+
+
+                </div>
+            </span>
+
+
+
+            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.table-responsive -->
+
+                </div>
+            </div>
+
+</main>
+<!--                <form action="" method="POST">-->
+
+<!--                    <div id="locationField" class="form-group row">-->
+<!--                        <label for="autocomplete" class="col-3 col-form-label">Address:</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input id="autocomplete"-->
+<!--                                   name="address"-->
+<!--                                   class=" form-control"-->
+<!--                                   placeholder="Enter address & select from dropdown"-->
+<!--                                   onFocus="geolocate()"-->
+<!--                                   type="text"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <br>-->
+<!--                    <div class="form row">-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="street_number">Number</label>-->
+<!--                            <input class="field form-control" id="street_number" disabled="true" readonly/>-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-9">-->
+<!--                            <label for="route">Street</label>-->
+<!--                            <input class="field form-control" id="route" disabled="true" readonly/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-row">-->
+<!--                        <div class="form-group col-md-6">-->
+<!--                            <label for="locality">City</label>-->
+<!--                            <input class="field form-control" type="text" id="locality" disabled="true" readonly/>-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-4">-->
+<!--                            <label for="administrative_area_level_1">State</label>-->
+<!--                            <input class="field form-control" type="text" id="administrative_area_level_1" disabled="true" readonly/>-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-2">-->
+<!--                            <label for="postal_code">Zip</label>-->
+<!--                            <input class="field form-control" type="text" id="postal_code" disabled="true" readonly/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="country">Country</label>-->
+<!--                        <input class="field form-control" type="text" id="country" disabled="true" readonly/>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="email" class="col-3 col-form-label">-->
+<!--                            Email</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="email" name="email" id="email"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group row">-->
+<!--                        <label for="homePhone" class="col-3 col-form-label">-->
+<!--                            Home Phone</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="tel" name="homePhone" id="homePhone"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="mobilePhone" class="col-3 col-form-label">-->
+<!--                            Mobile Phone</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="tel" name="mobilePhone" id="mobilePhone"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="manager" class="col-form-label">Manager</label>-->
+<!--                        <select class="form-control" id="manager" name="manager">-->
+<!--                            <option th:each="manager : ${managerList}"-->
+<!--                                    th:value="${manager.id}"-->
+<!--                                    th:text="${manager.firstName} + ${manager.lastName}" >Manager</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="userRoleId" class="col-form-label">User Role</label>-->
+<!--                        <select class="form-control" id="userRoleId" name="userRoleId">-->
+<!--                            <option th:each="userRole : ${userRoleList}"-->
+<!--                                    th:value="${userRole.id}"-->
+<!--                                    th:text="${userRole.name}" >User Role</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="jobRoleId" class="col-form-label">Job Role</label>-->
+<!--                        <select class="form-control" id="jobRoleId" name="jobRoleId">-->
+<!--                            <option th:each="jobRole : ${jobRoleList}"-->
+<!--                                    th:value="${jobRole.id}"-->
+<!--                                    th:text="${jobRole.name}" >Job Role</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="hoursPto" class="col-3 col-form-label">-->
+<!--                            Hours of PTO</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="number" name="mobilePhone" id="hoursPto"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="emergencyName" class="col-3 col-form-label">Emergency Contact Phone</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="text" name="emergencyName" id="emergencyName"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="emergencyNumber" class="col-3 col-form-label">-->
+<!--                            Emergency Contact  </label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="tel" name="emergencyNumber" id="emergencyNumber"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input form-control" id="isGood" name="isGood"/>-->
+<!--                            <label class="custom-control-label col-form-label" for="isGood" >Check here if this employee is good</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input form-control" id="isHr" name="isHr"/>-->
+<!--                            <label class="custom-control-label col-form-label" for="isHr" >Check here if this employee is in human resources</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <div class="custom-control custom-checkbox">-->
+<!--                            <input type="checkbox" class="custom-control-input form-control" id="isAdmin" name="isAdmin"/>-->
+<!--                            <label class="custom-control-label col-form-label" for="isAdmin" >Check here if this employee is an administrator</label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="ssn" class="col-3 col-form-label">-->
+<!--                            Hours of PTO</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="number" name="ssn" id="ssn"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="imageUrl" class="col-3 col-form-label">Placeholder for ImageUrl</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input type="url" name="imageUrl" id="imageUrl"-->
+<!--                                   class="form-control"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="hireDate" class="col-form-label">Date</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input class="form-control" type="date" value="2019-10-26" id="hireDate" name="hireDate">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group row">-->
+<!--                        <label for="termDate" class="col-form-label">Date</label>-->
+<!--                        <div class="col-9">-->
+<!--                            <input class="form-control" type="date" value="2019-10-26" id="termDate" name="termDate">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <input type="hidden" id="placeID" name="placeID" />-->
+
+
+<!--                    &lt;!&ndash;                        <input type="hidden" name="id" th:value="${organization.id}"/>&ndash;&gt;-->
+<!--                    <button type="submit" class="btn btn-primary">-->
+<!--                        Add Employee</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</main>-->
+
+
+
+
+<div th:replace="fragments/stylingFragment.html :: includes"></div>
+
+
+
+
+</body>
+</html>
